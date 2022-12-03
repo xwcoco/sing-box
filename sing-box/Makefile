@@ -43,7 +43,7 @@ define Package/$(PKG_NAME)
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=Web Servers/Proxies
-  TITLE:=The universal proxy platform.
+  TITLE:=The universal proxy platform for No Config.
   URL:=https://sing-box.sagernet.org
   DEPENDS:=$(GO_ARCH_DEPENDS) \
     +ca-bundle \
