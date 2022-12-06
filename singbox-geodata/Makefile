@@ -12,6 +12,7 @@ include $(INCLUDE_DIR)/package.mk
 
 GEOIP_VER:=20221112
 GEOIP_FILE:=geoip.db.$(GEOIP_VER)
+
 define Download/geoip
   URL:=https://github.com/SagerNet/sing-geoip/releases/latest/download
   URL_FILE:=geoip.db
