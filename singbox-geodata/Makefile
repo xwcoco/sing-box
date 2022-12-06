@@ -75,6 +75,5 @@ define Package/v2ray-geosite-singbox/install
   $(INSTALL_DATA) $(DL_DIR)/$(GEOSITE_FILE) $(1)/etc/singbox/geosite.db
   echo "$(GEOSITE_VER)" > $(1)/etc/singbox/geo_site_version
 endef
-
 $(eval $(call BuildPackage,v2ray-geoip-singbox))
 $(eval $(call BuildPackage,v2ray-geosite-singbox))
