@@ -1,4 +1,6 @@
-
+# SPDX-License-Identifier: GPL-3.0-only
+#
+# Copyright (C) 2021 ImmortalWrt.org
 
 include $(TOPDIR)/rules.mk
 
@@ -6,13 +8,12 @@ PKG_NAME:=v2ray-geodata-singbox
 PKG_RELEASE:=1
 
 PKG_LICENSE_FILES:=LICENSE
-PKG_MAINTAINER:=xwcoco <xwcoco@gmail.com>
+PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 
 include $(INCLUDE_DIR)/package.mk
 
 GEOIP_VER:=20221112
 GEOIP_FILE:=geoip.db.$(GEOIP_VER)
-
 define Download/geoip
   URL:=https://github.com/SagerNet/sing-geoip/releases/latest/download
   URL_FILE:=geoip.db
@@ -39,25 +40,25 @@ endef
 
 define Package/v2ray-geoip-singbox
   $(call Package/v2ray-geodata-singbox/template)
-  TITLE:=GeoIP List for Singbox
+  TITLE:=GeoIP List for singbox
   VERSION:=$(GEOIP_VER)-$(PKG_RELEASE)
   LICENSE:=CC-BY-SA-4.0
 endef
 
 define Package/v2ray-geosite-singbox
   $(call Package/v2ray-geodata-singbox/template)
-  TITLE:=Geosite List for Singbox
+  TITLE:=Geosite List for singbox
   VERSION:=$(GEOSITE_VER)-$(PKG_RELEASE)
   LICENSE:=MIT
 endef
 
 define Build/Prepare
-  $(call Build/Prepare/Default)
+	$(call Build/Prepare/Default)
 ifneq ($(CONFIG_PACKAGE_v2ray-geoip-singbox),)
-  $(call Download,geoip)
+	$(call Download,geoip)
 endif
 ifneq ($(CONFIG_PACKAGE_v2ray-geosite-singbox),)
-  $(call Download,geosite)
+	$(call Download,geosite)
 endif
 endef
 
@@ -65,15 +66,16 @@ define Build/Compile
 endef
 
 define Package/v2ray-geoip-singbox/install
-  $(INSTALL_DIR) $(1)/etc/singbox
-  $(INSTALL_DATA) $(DL_DIR)/$(GEOIP_FILE) $(1)/etc/singbox/geoip.db
-  echo "$(GEOIP_VER)" > $(1)/etc/singbox/geo_ip_version
+	$(INSTALL_DIR) $(1)/etc/singbox
+	$(INSTALL_DATA) $(DL_DIR)/$(GEOIP_FILE) $(1)/etc/singbox/geoip.db
+	echo "$(GEOIP_VER)" > $(1)/etc/singbox/geo_ip_version
 endef
 
 define Package/v2ray-geosite-singbox/install
-  $(INSTALL_DIR) $(1)/etc/singbox
-  $(INSTALL_DATA) $(DL_DIR)/$(GEOSITE_FILE) $(1)/etc/singbox/geosite.db
-  echo "$(GEOSITE_VER)" > $(1)/etc/singbox/geo_site_version
+	$(INSTALL_DIR) $(1)/etc/singbox
+	$(INSTALL_DATA) $(DL_DIR)/$(GEOSITE_FILE) $(1)/etc/singbox/geosite.db
+	echo "$(GEOSITE_VER)" > $(1)/etc/singbox/geo_site_version
 endef
+
 $(eval $(call BuildPackage,v2ray-geoip-singbox))
 $(eval $(call BuildPackage,v2ray-geosite-singbox))
