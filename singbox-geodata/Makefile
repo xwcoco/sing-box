@@ -12,7 +12,7 @@ PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 
 include $(INCLUDE_DIR)/package.mk
 
-GEOIP_VER:=20221212
+GEOIP_VER:=20230112
 GEOIP_FILE:=geoip.db.$(GEOIP_VER)
 define Download/geoip
   URL:=https://github.com/SagerNet/sing-geoip/releases/latest/download
@@ -21,7 +21,7 @@ define Download/geoip
   HASH:=skip
 endef
 
-GEOSITE_VER:=20221211071430
+GEOSITE_VER:=20230208103804
 GEOSITE_FILE:=geosite.db.$(GEOSITE_VER)
 define Download/geosite
   URL:=https://github.com/SagerNet/sing-geosite/releases/latest/download
