@@ -142,7 +142,7 @@ GO_PKG_TAGS:=$(subst $(space),$(comma),$(strip \
 	$(if $(CONFIG_SING_BOX_WITH_UTLS),with_utls) \
 	$(if $(CONFIG_SING_BOX_WITH_V2RAY_API),with_v2ray_api) \
 	$(if $(CONFIG_SING_BOX_WITH_WIREGUARD),with_wireguard) \
-
+))
 
 define Package/$(PKG_NAME)/install
 	$(call GoPackage/Package/Install/Bin,$(1))
