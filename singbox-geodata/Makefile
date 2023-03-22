@@ -21,7 +21,7 @@ define Download/geoip
   HASH:=skip
 endef
 
-GEOSITE_VER:=20230208103804
+GEOSITE_VER:=20230321023207
 GEOSITE_FILE:=geosite.db.$(GEOSITE_VER)
 define Download/geosite
   URL:=https://github.com/SagerNet/sing-geosite/releases/latest/download

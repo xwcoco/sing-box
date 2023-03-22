@@ -6,12 +6,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=sing-box
-PKG_VERSION:=1.2-beta1
+PKG_VERSION:=1.2-beta10
 PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/SagerNet/sing-box/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=dcf36bc8cacea19a2e47bcfc691059680d6691898327b2317085711e88ff45cb
+PKG_HASH:=906c5972fab7f64aa9f8ae697d245e408689a7bb85c88934a4963dbba405238f
 
 PKG_LICENSE:=GPL-3.0
 PKG_LICENSE_FILE:=LICENSE
@@ -56,88 +56,92 @@ GO_PKG_TARGET_VARS:=$(filter-out CGO_ENABLED=%,$(GO_PKG_TARGET_VARS)) CGO_ENABLE
 
 define Package/$(PKG_NAME)/config
   menu "Customizing build tags"
+    depends on PACKAGE_sing-box
 
-    config SING_BOX_BUILD_ACME
+    config SING_BOX_WITH_ACME
       bool "Build with ACME TLS certificate issuer support"
       default n
 
-    config SING_BOX_BUILD_CLASH_API
+    config SING_BOX_WITH_CLASH_API
       bool "Build with Clash API support (EXPERIMENTAL!!!)"
       default y
 
-    config SING_BOX_BUILD_ECH
+    config SING_BOX_WITH_DHCP
+      bool "Build with DHCP support"
+      default y
+
+    config SING_BOX_WITH_ECH
       bool "Build with TLS ECH extension support"
       default n
 
-    config SING_BOX_BUILD_GRPC
+    config SING_BOX_WITH_GRPC
       bool "Build with standard gRPC support"
       default n
       help
       sing-box has better performance gun-lite gRPC built-in by default.
       This standard gRPC has better compatibility but poor performance.
 
-    config SING_BOX_BUILD_GVISOR
+    config SING_BOX_WITH_GVISOR
       bool "Build with gVisor support"
       default n
 
-    config SING_BOX_BUILD_QUIC
+    config SING_BOX_WITH_QUIC
       bool "Build with QUIC support"
       default y
       help
         Required by HTTP3 DNS transports, Naive inbound,
         Hysteria inbound / outbound, and v2ray QUIC transport.
 
-    config SING_BOX_BUILD_SHADOWSOCKSR
+    config SING_BOX_WITH_REALITY_SERVER
+      bool "Build with reality TLS server support"
+      default n
+
+    config SING_BOX_WITH_SHADOWSOCKSR
       bool "Build with ShadowsockR support"
       default n
 
-    config SING_BOX_BUILD_UTLS
+    config SING_BOX_WITH_UTLS
       bool "Build with uTLS support"
       default y
 
-    config SING_BOX_BUILD_V2RAY_API
+    config SING_BOX_WITH_V2RAY_API
       bool "Build with V2Ray API support (EXPERIMENTAL!!!)"
       default n
 
-    config SING_BOX_BUILD_WIREGUARD
+    config SING_BOX_WITH_WIREGUARD
       bool "Build with WireGuard support"
       default y
 
   endmenu
 endef
 
-PKG_BUILD_TAGS:=
-ifneq ($(CONFIG_SING_BOX_BUILD_ACME),)
-  PKG_BUILD_TAGS+=with_acme
-endif
-ifneq ($(CONFIG_SING_BOX_BUILD_CLASH_API),)
-  PKG_BUILD_TAGS+=with_clash_api
-endif
-ifneq ($(CONFIG_SING_BOX_BUILD_ECH),)
-  PKG_BUILD_TAGS+=with_ech
-endif
-ifneq ($(CONFIG_SING_BOX_BUILD_GRPC),)
-  PKG_BUILD_TAGS+=with_grpc
-endif
-ifneq ($(CONFIG_SING_BOX_BUILD_GVISOR),)
-  PKG_BUILD_TAGS+=with_gvisor
-endif
-ifneq ($(CONFIG_SING_BOX_BUILD_QUIC),)
-  PKG_BUILD_TAGS+=with_quic
-endif
-ifneq ($(CONFIG_SING_BOX_BUILD_SHADOWSOCKSR),)
-  PKG_BUILD_TAGS+=with_shadowsocksr
-endif
-ifneq ($(CONFIG_SING_BOX_BUILD_UTLS),)
-  PKG_BUILD_TAGS+=with_utls
-endif
-ifneq ($(CONFIG_SING_BOX_BUILD_V2RAY_API),)
-  PKG_BUILD_TAGS+=with_v2ray_api
-endif
-ifneq ($(CONFIG_SING_BOX_BUILD_WIREGUARD),)
-  PKG_BUILD_TAGS+=with_wireguard
-endif
-GO_PKG_TAGS:=$(subst $(space),$(comma),$(strip $(PKG_BUILD_TAGS)))
+PKG_CONFIG_DEPENDS:= \
+	CONFIG_SING_BOX_WITH_ACME \
+	CONFIG_SING_BOX_WITH_CLASH_API \
+	CONFIG_SING_BOX_WITH_DHCP \
+	CONFIG_SING_BOX_WITH_ECH \
+	CONFIG_SING_BOX_WITH_GRPC \
+	CONFIG_SING_BOX_WITH_GVISOR \
+	CONFIG_SING_BOX_WITH_QUIC \
+	CONFIG_SING_BOX_WITH_REALITY_SERVER \
+	CONFIG_SING_BOX_WITH_SHADOWSOCKSR \
+	CONFIG_SING_BOX_WITH_UTLS \
+	CONFIG_SING_BOX_WITH_V2RAY_API \
+	CONFIG_SING_BOX_WITH_WIREGUARD
+
+GO_PKG_TAGS:=$(subst $(space),$(comma),$(strip \
+	$(if $(CONFIG_SING_BOX_WITH_ACME),with_acme) \
+	$(if $(CONFIG_SING_BOX_WITH_CLASH_API),with_clash_api) \
+	$(if $(CONFIG_SING_BOX_WITH_DHCP),with_dhcp) \
+	$(if $(CONFIG_SING_BOX_WITH_ECH),with_ech) \
+	$(if $(CONFIG_SING_BOX_WITH_GRPC),with_grpc) \
+	$(if $(CONFIG_SING_BOX_WITH_GVISOR),with_gvisor) \
+	$(if $(CONFIG_SING_BOX_WITH_QUIC),with_quic) \
+	$(if $(CONFIG_SING_BOX_WITH_REALITY_SERVER),with_reality_server) \
+	$(if $(CONFIG_SING_BOX_WITH_SHADOWSOCKSR),with_shadowsocksr) \
+	$(if $(CONFIG_SING_BOX_WITH_UTLS),with_utls) \
+	$(if $(CONFIG_SING_BOX_WITH_V2RAY_API),with_v2ray_api) \
+	$(if $(CONFIG_SING_BOX_WITH_WIREGUARD),with_wireguard) \
 
 
 define Package/$(PKG_NAME)/install
