@@ -42,7 +42,7 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) ./files/sing-box $(1)/etc/uci-defaults/sing-box
+	$(INSTALL_BIN) ./files/sing-box $(1)/usr/bin/sing-box
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
